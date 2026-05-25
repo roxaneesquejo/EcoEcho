@@ -99,17 +99,17 @@ When your feature or algorithm is complete, push your branch and open a Pull Req
 
 ## Project Updates (Can be changed :))
 Completed:
-[x] Monorepo workspace initialization
-[x] Docker-compose integration (PostgreSQL + Redis)
-[x] Express Server scaffolding & Database Schema implementation
-[x] DAA: Max-Heap Sort algorithm (Leaderboard implementation)
-[x] DAA: Depth-First Search (DFS) algorithm (Tier Progression validation)
+* [x] Monorepo workspace initialization
+* [x] Docker-compose integration (PostgreSQL + Redis)
+* [x] Express Server scaffolding & Database Schema implementation
+* [x] DAA: Max-Heap Sort algorithm (Leaderboard implementation)
+* [x] DAA: Depth-First Search (DFS) algorithm (Tier Progression validation)
 
 In Progress:
-[ ] DAA: Binary Search (EcoWrap percentile calculation & XP mapping)
-[ ] DAA: String Matching (Find-a-Buddy UID search)
-[ ] DAA: Sorting by Counting (Contribution analytics/tag tallying)
-[ ] Flutter BLoC integration with backend endpoints
-[ ] Final UI styling 
+* [ ] DAA: Binary Search (EcoWrap percentile calculation & XP mapping)
+* [ ] DAA: String Matching (Find-a-Buddy UID search)
+* [ ] DAA: Sorting by Counting (Contribution analytics/tag tallying)
+* [ ] Flutter BLoC integration with backend endpoints
+* [ ] Final UI styling 
 
 #### This is the final project requirement to the DAA course
