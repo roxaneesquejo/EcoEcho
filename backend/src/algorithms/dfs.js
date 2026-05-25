@@ -1,13 +1,4 @@
-/**
- * Adjacency list keyed by tier id (number or string).
- * @typedef {Record<string | number, (number | string)[]>} TierAdjacencyList
- */
-
-/**
- * @param {number | string} tierId
- * @param {TierAdjacencyList} adjacencyList
- * @returns {(number | string)[]}
- */
+// neighbors for a tier id (handles string keys from json)
 function getNeighbors(tierId, adjacencyList) {
   if (tierId in adjacencyList) {
     return adjacencyList[tierId];
@@ -16,13 +7,7 @@ function getNeighbors(tierId, adjacencyList) {
   return adjacencyList[key] ?? [];
 }
 
-/**
- * Depth-first search: returns true if a path exists from currentTierId to targetTierId.
- * @param {number | string} currentTierId
- * @param {number | string} targetTierId
- * @param {TierAdjacencyList} adjacencyList
- * @returns {boolean}
- */
+// true if target tier is reachable from current via adjacency list
 function hasProgressionPath(currentTierId, targetTierId, adjacencyList) {
   if (currentTierId === targetTierId) {
     return true;
@@ -34,16 +19,13 @@ function hasProgressionPath(currentTierId, targetTierId, adjacencyList) {
 
   const visited = new Set();
 
-  /**
-   * @param {number | string} node
-   * @returns {boolean}
-   */
   function dfs(node) {
     if (node === targetTierId || String(node) === String(targetTierId)) {
       return true;
     }
 
     const visitKey = String(node);
+    // cycle check
     if (visited.has(visitKey)) {
       return false;
     }

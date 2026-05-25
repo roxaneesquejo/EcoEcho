@@ -6,10 +6,7 @@ const { hasProgressionPath } = require('../algorithms/dfs');
 const LEADERBOARD_CACHE_KEY = 'leaderboard:top20';
 const LEADERBOARD_CACHE_TTL_SECONDS = 60;
 
-/**
- * GET /api/leaderboard
- * Returns top 20 users by total_xp (heap-sorted), cached in Redis for 60s.
- */
+// get /api/leaderboard — top 20 by total_xp
 async function getLeaderboard(_req, res) {
   try {
     const cached = await redisClient.get(LEADERBOARD_CACHE_KEY);
@@ -25,6 +22,7 @@ async function getLeaderboard(_req, res) {
     const sorted = heapSort(rows);
     const top20 = sorted.slice(0, 20);
 
+    // need to cache this so it loads fast
     await redisClient.set(LEADERBOARD_CACHE_KEY, JSON.stringify(top20), {
       EX: LEADERBOARD_CACHE_TTL_SECONDS,
     });
@@ -36,11 +34,7 @@ async function getLeaderboard(_req, res) {
   }
 }
 
-/**
- * Build adjacency list: parent_tier_id -> [child tier ids].
- * @param {{ id: number, parent_tier_id: number | null }[]} tiers
- * @returns {Record<number, number[]>}
- */
+// parent_tier_id -> [child ids] for dfs
 function buildTierAdjacencyList(tiers) {
   const adjacencyList = {};
 
@@ -59,10 +53,7 @@ function buildTierAdjacencyList(tiers) {
   return adjacencyList;
 }
 
-/**
- * GET /api/tiers/progression?currentTierId=&targetTierId=
- * Returns whether target tier is reachable from current tier via the tier graph.
- */
+// get /api/tiers/progression?currentTierId=&targetTierId=
 async function checkTierProgression(req, res) {
   try {
     const currentTierId = Number(req.query.currentTierId);

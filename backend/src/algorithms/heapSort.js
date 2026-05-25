@@ -1,24 +1,11 @@
-/**
- * @typedef {{ id: number, username: string, total_xp: number }} User
- */
-
-/**
- * @param {User[]} arr
- * @param {number} i
- * @param {number} j
- */
+// swap two indices in place
 function swap(arr, i, j) {
   const temp = arr[i];
   arr[i] = arr[j];
   arr[j] = temp;
 }
 
-/**
- * Restore max-heap property for subtree rooted at index i.
- * @param {User[]} arr
- * @param {number} heapSize
- * @param {number} i
- */
+// restore max-heap at i, ordered by total_xp
 function heapify(arr, heapSize, i) {
   let largest = i;
   const left = 2 * i + 1;
@@ -37,10 +24,7 @@ function heapify(arr, heapSize, i) {
   }
 }
 
-/**
- * Build a max-heap ordered by total_xp.
- * @param {User[]} arr
- */
+// build max-heap from the array
 function buildMaxHeap(arr) {
   const n = arr.length;
   for (let i = Math.floor(n / 2) - 1; i >= 0; i -= 1) {
@@ -48,11 +32,7 @@ function buildMaxHeap(arr) {
   }
 }
 
-/**
- * Max-heap sort: returns users sorted by total_xp descending.
- * @param {User[]} users
- * @returns {User[]}
- */
+// sort users by total_xp descending (id, username, total_xp)
 function heapSort(users) {
   if (!Array.isArray(users) || users.length <= 1) {
     return Array.isArray(users) ? [...users] : [];
@@ -68,6 +48,7 @@ function heapSort(users) {
     heapify(arr, end, 0);
   }
 
+  // heap pass is ascending — flip for leaderboard
   return arr.reverse();
 }
 
