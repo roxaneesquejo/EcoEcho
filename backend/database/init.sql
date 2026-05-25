@@ -1,7 +1,7 @@
--- EcoEcho database schema
--- Run against ecoecho_db (see docker-compose.yml :) )
+-- ecoecho schema init
+-- run on ecoecho_db (see docker-compose)
 
--- Tier progression graph
+-- tier tree for progression dfs
 CREATE TABLE IF NOT EXISTS tiers (
     id              SERIAL PRIMARY KEY,
     tier_name       VARCHAR(100) NOT NULL UNIQUE,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS tiers (
     parent_tier_id  INTEGER REFERENCES tiers (id) ON DELETE SET NULL
 );
 
--- Users
+-- users
 CREATE TABLE IF NOT EXISTS users (
     id               SERIAL PRIMARY KEY,
     email            VARCHAR(255) NOT NULL UNIQUE,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
     current_tier_id  INTEGER REFERENCES tiers (id) ON DELETE SET NULL
 );
 
--- Missions
+-- missions
 CREATE TABLE IF NOT EXISTS missions (
     id          SERIAL PRIMARY KEY,
     title       VARCHAR(200) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS missions (
     xp_reward   INTEGER NOT NULL DEFAULT 0 CHECK (xp_reward >= 0)
 );
 
--- User mission completions
+-- user mission completions
 CREATE TABLE IF NOT EXISTS user_missions (
     user_id       INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     mission_id    INTEGER NOT NULL REFERENCES missions (id) ON DELETE CASCADE,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS user_missions (
     PRIMARY KEY (user_id, mission_id)
 );
 
--- Activity audit trail
+-- activity audit trail
 CREATE TABLE IF NOT EXISTS activity_logs (
     id                 SERIAL PRIMARY KEY,
     user_id            INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS activity_logs (
     created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Lookup indexes for foreign keys
+-- fk indexes for faster lookups
 CREATE INDEX IF NOT EXISTS idx_users_current_tier_id ON users (current_tier_id);
 CREATE INDEX IF NOT EXISTS idx_tiers_parent_tier_id ON tiers (parent_tier_id);
 CREATE INDEX IF NOT EXISTS idx_user_missions_mission_id ON user_missions (mission_id);
