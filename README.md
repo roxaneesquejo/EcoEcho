@@ -30,9 +30,8 @@ Before contributing, ensure you have the following installed on your laptop/comp
 
 ---
 
-## 🚀 Local Setup Instructions
-
-Follow these exact steps to get the full application running on your local machine.
+## Local Setup Instructions
+Follow these exact steps to get the full application running on your laptop/computer.
 
 ### 1. Clone the Repository
 ```bash
@@ -45,6 +44,7 @@ Ensure Docker Desktop is open, then spin up PostgreSQL and Redis:
 ```bash
 docker-compose up -d
 ```
+
 ### 3. Initialize the Database Schema
 You need to create the tables locally. Run the following command from the root folder depending on your terminal:
 
@@ -70,7 +70,6 @@ The API will run on http://localhost:3000. You can verify it by checking http://
 
 ### 5. Start the Flutter Frontend
 Open a new terminal window, fetch the Dart packages, and run the app:
-
 ```Bash
 cd frontend
 flutter pub get
@@ -82,7 +81,7 @@ flutter run
 
 Please follow this workflow for all contributions to maintain a clean codebase and ensure seamless integration of our core algorithms :)
 
-### 1. Branching Strategy
+### 1. Branching 
 Never push directly to the `main` branch. Create a new branch for your work using the following naming conventions:
 * `feature/short-description` (e.g., `feature/bloc-state-setup`)
 * `algo/short-description` (e.g., `algo/heap-sort-leaderboard`)
@@ -93,12 +92,12 @@ Write clear, descriptive commit messages.
 * **Good:** `feat(backend): implement DFS validation for tier progression`
 * **Bad:** `fixed stuff`
 
-### 3. Pull Requests (PRs)
+### 3. Pull Requests 
 When your feature or algorithm is complete, push your branch and open a Pull Request against `main`. 
 * **Description:** Clearly detail what the PR does. If it relates to the DAA requirements, specify time/space complexity notes in the description.
 * **Review Process:** Before any code is merged, the PR **must** be reviewed and approved by at least one other core team member.
 
-## Project Updates & Roadmap
+## Project Updates (Can be changed :))
 Completed:
 [x] Monorepo workspace initialization
 [x] Docker-compose integration (PostgreSQL + Redis)
