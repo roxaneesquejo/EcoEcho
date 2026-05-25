@@ -34,6 +34,5 @@ Write clear, descriptive commit messages.
 ### 3. Pull Requests (PRs)
 When your feature or algorithm is complete, push your branch and open a Pull Request against `main`. 
 * **Description:** Clearly detail what the PR does. If it relates to the DAA requirements, specify time/space complexity notes in the description.
-* **Review Process:** Before any code is merged, the PR **must** be reviewed and approved by at least one other core team member (Aviles, Artates, Acob, or Alapag). 
-
+* **Review Process:** Before any code is merged, the PR **must** be reviewed and approved by at least one other core team
 #### This is the final project requirement to the DAA course
