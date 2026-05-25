@@ -23,7 +23,7 @@ Since this is a monorepo, please ensure you are working within the correct direc
 ## Prerequisites
 Before contributing, ensure you have the following installed on your laptop/computer :) :
 1. **[Git](https://git-scm.com/downloads)**
-2. **[Docker Desktop](https://www.docker.com/products/docker-desktop)** (Must be running in the background, open it when u contribute, u will see a green dot next to it)
+2. **[Docker Desktop](https://www.docker.com/products/docker-desktop)** (Must be running in the background, open it when u contribute, you will see a green dot next to it)
 3. **[Node.js](https://nodejs.org/)** (v18 or higher recommended)
 4. **[Flutter SDK](https://docs.flutter.dev/get-started/install)** (Stable channel, e.g., v3.44.0+)
 5. **[Android Studio](https://developer.android.com/studio)** (For the Android toolchain and emulator)
