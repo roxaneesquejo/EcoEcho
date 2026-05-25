@@ -1,7 +1,7 @@
 -- EcoEcho database schema
--- Run against ecoecho_db (see docker-compose.yml)
+-- Run against ecoecho_db (see docker-compose.yml :) )
 
--- Tier progression graph (DFS-friendly via parent_tier_id)
+-- Tier progression graph
 CREATE TABLE IF NOT EXISTS tiers (
     id              SERIAL PRIMARY KEY,
     tier_name       VARCHAR(100) NOT NULL UNIQUE,
