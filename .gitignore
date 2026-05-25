@@ -1,0 +1,35 @@
+# Node.js Backend Defaults
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+.env.local
+dist/
+coverage/
+
+# Flutter/Dart Defaults
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.idea/
+.vscode/
+
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+**/build/
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Symbolication related
+app.*.symbols
+app.*.map.json
