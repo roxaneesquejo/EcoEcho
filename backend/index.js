@@ -2,12 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('./src/config/db');
 const redisClient = require('./src/config/redisClient');
+const {
+  getLeaderboard,
+  checkTierProgression,
+} = require('./src/controllers/ecoController');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.get('/api/leaderboard', getLeaderboard);
+app.get('/api/tiers/progression', checkTierProgression);
 
 app.get('/health', async (_req, res) => {
   try {
