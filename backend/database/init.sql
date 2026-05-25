@@ -1,5 +1,5 @@
 -- ecoecho schema init
--- run on ecoecho_db (see docker-compose)
+-- run on ecoecho_db (see docker-compose :) )
 
 -- tier tree for progression dfs
 CREATE TABLE IF NOT EXISTS tiers (
