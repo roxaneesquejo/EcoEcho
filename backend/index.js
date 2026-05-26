@@ -6,12 +6,15 @@ const {
   getLeaderboard,
   checkTierProgression,
 } = require('./src/controllers/ecoController');
+const authRoutes = require('./src/routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/auth', authRoutes);
 
 app.get('/api/leaderboard', getLeaderboard);
 app.get('/api/tiers/progression', checkTierProgression);
