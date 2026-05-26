@@ -1,22 +1,37 @@
 version: '3.8'
+
 services:
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: ecoecho-postgres
     environment:
-      POSTGRES_USER: eco_admin
-      POSTGRES_PASSWORD: eco_password
-      POSTGRES_DB: ecoecho_db
+      - POSTGRES_USER=eco_admin
+      - POSTGRES_PASSWORD=eco_password
+      - POSTGRES_DB=ecoecho_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   redis:
-    image: redis:7
+    image: redis:7-alpine
     container_name: ecoecho-redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: ecoecho-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "8000:80"
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
+  redis_data:
