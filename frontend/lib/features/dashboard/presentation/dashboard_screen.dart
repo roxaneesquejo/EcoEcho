@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../auth/presentation/home_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -9,27 +10,21 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    Center(
-      child: Text(
-        'Home Placeholder',
-        style: TextStyle(fontSize: 24, fontFamily: 'Inter', color: Color(0xFF154212)),
-      ),
-    ),
-    Center(
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomeScreen(), 
+    const Center(
       child: Text(
         'Community Placeholder',
         style: TextStyle(fontSize: 24, fontFamily: 'Inter', color: Color(0xFF154212)),
       ),
     ),
-    Center(
+    const Center(
       child: Text(
         'Leaderboard Placeholder',
         style: TextStyle(fontSize: 24, fontFamily: 'Inter', color: Color(0xFF154212)),
       ),
     ),
-    Center(
+    const Center(
       child: Text(
         'Profile Placeholder',
         style: TextStyle(fontSize: 24, fontFamily: 'Inter', color: Color(0xFF154212)),
