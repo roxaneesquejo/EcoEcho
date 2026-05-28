@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/auth/presentation/dashboard_screen.dart';
+import 'package:frontend/features/dashboard/presentation/dashboard_screen.dart';
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_event.dart';
 import 'bloc/auth_state.dart';
 import 'signup_screen.dart';
-import '../../dashboard/presentation/dashboard_screen.dart'; // Added import
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -64,7 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
             
-            // Navigate to Dashboard on success
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const DashboardScreen()),
@@ -143,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Text('Password', style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF191C1A))),
                             GestureDetector(
                               onTap: () {
-                                // Forgot password implementation
+                                // to put: forgot pass
                               },
                               child: const Text('Forgot?', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF154212), fontWeight: FontWeight.bold, fontSize: 12)),
                             ),
@@ -211,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 48,
                           child: OutlinedButton.icon(
                             onPressed: () {
-                              // Google sign in implementation
+                              // to put: google sign in
                             },
                             icon: const Icon(Icons.g_mobiledata, size: 28, color: Color(0xFF191C1A)),
                             label: const Text('Continue with Google', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF191C1A), fontWeight: FontWeight.w600)),
