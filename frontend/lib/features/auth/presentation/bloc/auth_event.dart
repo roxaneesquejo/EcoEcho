@@ -21,13 +21,15 @@ class SignupRequested extends AuthEvent {
   final String username;
   final String email;
   final String password;
+  final double ecoScore;
 
   const SignupRequested({
     required this.username,
     required this.email,
     required this.password,
+    required this.ecoScore,
   });
 
   @override
-  List<Object> get props => [username, email, password];
+  List<Object> get props => [username, email, password, ecoScore];
 }
