@@ -1,4 +1,6 @@
+require('dotenv').config();
 const express = require('express');
+const { Pool } = require('pg');
 const cors = require('cors');
 const pool = require('./src/config/db');
 const redisClient = require('./src/config/redisClient');
