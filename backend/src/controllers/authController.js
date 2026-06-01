@@ -53,9 +53,9 @@ async function signup(req, res) {
       return res.status(400).json({ error: 'username, email, and password are required' });
     }
 
-    let score = Number(ecoScore || 0);
-    if (!Number.isFinite(score)) {
-      score = 0;
+    const score = Number(ecoScore || 0);
+    if (!Number.isFinite(score) || score < 0) {
+      return res.status(400).json({ error: 'ecoScore must be a valid positive number' });
     }
 
     // divide and conquer — place user on the benchmark curve
