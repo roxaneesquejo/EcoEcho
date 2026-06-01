@@ -47,10 +47,15 @@ async function tierIdFromPercentileRank(percentileRank) {
 // post /signup
 async function signup(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, ecoScore } = req.body;
 
     if (!username || !email || !password) {
       return res.status(400).json({ error: 'username, email, and password are required' });
+    }
+
+    let score = Number(ecoScore || 0);
+    if (!Number.isFinite(score)) {
+      score = 0;
     }
 
     // divide and conquer — place user on the benchmark curve
@@ -76,7 +81,7 @@ async function signup(req, res) {
     if (err.code === '23505') {
       return res.status(409).json({ error: 'email or username already exists' });
     }
-    console.error('signup error:', err);
+    console.error('Detailed DB Error:', err);
     return res.status(500).json({ error: 'failed to create user' });
   }
 }
