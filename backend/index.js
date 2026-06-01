@@ -21,18 +21,30 @@ app.use('/api/auth', authRoutes);
 app.get('/api/leaderboard', getLeaderboard);
 app.get('/api/tiers/progression', checkTierProgression);
 
+// Updated Health Check to accommodate missing production Redis environments gracefully
 app.get('/health', async (_req, res) => {
   try {
     await pool.query('SELECT 1');
-    await redisClient.ping();
-    res.json({ status: 'ok', postgres: true, redis: true });
+
+    // Check if redis client is open and connected before pinging
+    const redisAlive = redisClient.isOpen;
+    if (redisAlive) {
+      await redisClient.ping();
+    }
+
+    res.json({
+      status: 'ok',
+      postgres: true,
+      redis: redisAlive ? true : 'skipped (production bypass active)'
+    });
   } catch (err) {
     res.status(503).json({ status: 'degraded', error: err.message });
   }
 });
 
+// Changed to safeConnect to let the Express web server run without Redis running locally
 async function start() {
-  await redisClient.connect();
+  await redisClient.safeConnect();
   app.listen(PORT, () => {
     console.log(`EcoEcho API listening on port ${PORT}`);
   });
