@@ -6,7 +6,7 @@ import 'bloc/auth_event.dart';
 import 'bloc/auth_state.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -16,12 +16,14 @@ class _SignupScreenState extends State<SignupScreen> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _ecoScoreController = TextEditingController();
 
   @override
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _ecoScoreController.dispose();
     super.dispose();
   }
 
@@ -29,21 +31,24 @@ class _SignupScreenState extends State<SignupScreen> {
     final username = _usernameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
+    final ecoScoreStr = _ecoScoreController.text.trim();
+    final ecoScore = double.tryParse(ecoScoreStr) ?? 0.0;
 
     if (username.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
-      
       context.read<AuthBloc>().add(
         SignupRequested(
           username: username,
           email: email,
           password: password,
+          ecoScore: ecoScore,
         ),
       );
     } else {
+      final theme = Theme.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all fields to join the movement.'),
-          backgroundColor: Colors.redAccent,
+        SnackBar(
+          content: const Text('Please fill in all fields to join the movement.'),
+          backgroundColor: theme.colorScheme.error,
         ),
       );
     }
@@ -51,22 +56,26 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAF5),
+      backgroundColor: colorScheme.surface,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.errorMessage),
-                backgroundColor: Colors.redAccent,
+                backgroundColor: colorScheme.error,
               ),
             );
           } else if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Welcome ${state.user.username}! You placed in the ${state.percentileRank}th percentile.'),
-                backgroundColor: Colors.green,
+                backgroundColor: colorScheme.secondary,
               ),
             );
             // This is where to put our home navigation if ok na
@@ -79,38 +88,41 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.eco, size: 64, color: Color(0xFF154212)),
+                  Icon(Icons.eco, size: 64, color: colorScheme.primary),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'Join the Movement',
-                    style: TextStyle(
+                    style: textTheme.displayLarge?.copyWith(
                       fontFamily: 'Be Vietnam Pro',
                       fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF154212),
+                      color: colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Sign up to start making a real-world impact with a rooted community.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontFamily: 'Inter', color: Color(0xFF72796E), fontSize: 16),
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontFamily: 'Inter',
+                      color: colorScheme.onSurfaceVariant,
+                      fontSize: 16,
+                    ),
                   ),
                   const SizedBox(height: 32),
                   
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.0),
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                       child: Container(
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: const Color(0xFFC2C9BB).withOpacity(0.3)),
+                          color: Colors.white.withValues(alpha: 0.7),
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF79564B).withOpacity(0.04),
+                              color: colorScheme.shadow.withValues(alpha: 0.04),
                               blurRadius: 20,
                               offset: const Offset(0, 4),
                             ),
@@ -119,93 +131,167 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Full Name', style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF72796E))),
+                            Text(
+                              'Full Name', 
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'Inter', 
+                                fontWeight: FontWeight.bold, 
+                                fontSize: 12, 
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
                             const SizedBox(height: 4),
                             TextField(
                               controller: _usernameController,
                               decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person_outline, color: colorScheme.onSurfaceVariant),
                                 hintText: 'Jane Doe',
-                                hintStyle: const TextStyle(color: Color(0xFFC2C9BB)),
+                                hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
                                 filled: true,
                                 fillColor: Colors.white,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF154212))),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 12),
-                            const Text('Email', style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF72796E))),
+                            Text(
+                              'Email', 
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'Inter', 
+                                fontWeight: FontWeight.bold, 
+                                fontSize: 12, 
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
                             const SizedBox(height: 4),
                             TextField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.mail_outline, color: colorScheme.onSurfaceVariant),
                                 hintText: 'jane@example.com',
-                                hintStyle: const TextStyle(color: Color(0xFFC2C9BB)),
+                                hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
                                 filled: true,
                                 fillColor: Colors.white,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF154212))),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 12),
-                            const Text('Password', style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF72796E))),
+                            Text(
+                              'Password', 
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'Inter', 
+                                fontWeight: FontWeight.bold, 
+                                fontSize: 12, 
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
                             const SizedBox(height: 4),
                             TextField(
                               controller: _passwordController,
                               obscureText: true,
                               decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.lock_outline, color: colorScheme.onSurfaceVariant),
                                 hintText: '••••••••',
-                                hintStyle: const TextStyle(color: Color(0xFFC2C9BB)),
+                                hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
                                 filled: true,
                                 fillColor: Colors.white,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF154212))),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 12),
+                            Text(
+                              'Environmental Score', 
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'Inter', 
+                                fontWeight: FontWeight.bold, 
+                                fontSize: 12, 
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
                             TextField(
+                              controller: _ecoScoreController,
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               decoration: InputDecoration(
-                                prefixIcon: const Icon(Icons.compost, color: Color(0xFF72796E)),
+                                prefixIcon: Icon(Icons.compost, color: colorScheme.onSurfaceVariant),
                                 hintText: '0.0',
-                                hintStyle: const TextStyle(color: Color(0xFFC2C9BB)),
+                                hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
                                 filled: true,
                                 fillColor: Colors.white,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF154212))),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.outline),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0), 
+                                  borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 24),
                             
                             if (state is AuthLoading)
-                              const Center(child: CircularProgressIndicator(color: Color(0xFF154212)))
+                              Center(child: CircularProgressIndicator(color: colorScheme.primary))
                             else
                               SizedBox(
                                 width: double.infinity,
                                 height: 48,
                                 child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF154212),
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
                                   onPressed: _submitSignup,
-                                  child: const Row(
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('Create Account', style: TextStyle(fontFamily: 'Inter', color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                                      SizedBox(width: 8),
-                                      Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+                                      Text(
+                                        'Create Account', 
+                                        style: textTheme.bodyLarge?.copyWith(
+                                          fontFamily: 'Inter', 
+                                          color: colorScheme.onPrimary, 
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      const Icon(Icons.arrow_forward, size: 18),
                                     ],
                                   ),
                                 ),
@@ -219,12 +305,25 @@ class _SignupScreenState extends State<SignupScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Already have an account? ', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF72796E))),
+                      Text(
+                        'Already have an account? ', 
+                        style: textTheme.bodyMedium?.copyWith(
+                          fontFamily: 'Inter', 
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Log In', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF154212), fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'Log In', 
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontFamily: 'Inter', 
+                            color: colorScheme.primary, 
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   )

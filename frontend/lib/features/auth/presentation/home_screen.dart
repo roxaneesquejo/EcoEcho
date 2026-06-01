@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../../../../core/network/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     } catch (e) {
-      print('Detailed Error: $e');
+      debugPrint('Detailed Error: $e');
       setState(() {
         _errorMessage = 'Network error: $e';
         _isLoading = false;
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF79564B).withOpacity(0.04),
+                      color: Color(0xFF79564B).withValues(alpha: 0.04),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -187,11 +187,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(color: const Color(0xFFC2C9BB).withOpacity(0.5)),
+                  border: Border.all(color: Color(0xFFC2C9BB).withValues(alpha: 0.5)),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF79564B).withOpacity(0.04),
+                      color: Color(0xFF79564B).withValues(alpha: 0.04),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -349,10 +349,10 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFC2C9BB).withOpacity(0.5)),
+        border: Border.all(color: Color(0xFFC2C9BB).withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF79564B).withOpacity(0.04),
+            color: Color(0xFF79564B).withValues(alpha: 0.04),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),

@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'username': event.username,
         'email': event.email,
         'password': event.password,
+        'ecoScore': event.ecoScore,
       });
 
       final responseData = jsonDecode(response.body);

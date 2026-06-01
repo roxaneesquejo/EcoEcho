@@ -7,7 +7,7 @@ import 'bloc/auth_state.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -44,22 +44,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAF5),
+      backgroundColor: colorScheme.surface,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.errorMessage),
-                backgroundColor: const Color.fromARGB(255, 164, 72, 72),
+                backgroundColor: colorScheme.error,
               ),
             );
           } else if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Welcome back, ${state.user.username}!'),
-                backgroundColor: Colors.green,
+                backgroundColor: colorScheme.secondary,
               ),
             );
             
@@ -76,24 +80,23 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.eco, size: 80, color: Color(0xFF154212)),
+                  Icon(Icons.eco, size: 80, color: colorScheme.primary),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'Welcome Back',
-                    style: TextStyle(
+                    style: textTheme.displayLarge?.copyWith(
                       fontFamily: 'Be Vietnam Pro',
                       fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF154212),
+                      color: colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Sign in to continue your environmental stewardship.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: textTheme.bodyMedium?.copyWith(
                       fontFamily: 'Inter',
-                      color: Color(0xFF72796E),
+                      color: colorScheme.onSurfaceVariant,
                       fontSize: 14,
                     ),
                   ),
@@ -104,11 +107,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFC2C9BB).withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: colorScheme.outline.withValues(alpha: 0.5)),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF79564B).withOpacity(0.04),
+                          color: colorScheme.shadow.withValues(alpha: 0.04),
                           blurRadius: 20,
                           offset: const Offset(0, 4),
                         ),
@@ -117,33 +120,66 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Email Address', style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF191C1A))),
+                        Text(
+                          'Email Address', 
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontFamily: 'Inter', 
+                            fontWeight: FontWeight.bold, 
+                            fontSize: 12, 
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
                         const SizedBox(height: 4),
                         TextField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.mail_outline, color: Color(0xFF72796E)),
+                            prefixIcon: Icon(Icons.mail_outline, color: colorScheme.onSurfaceVariant),
                             hintText: 'your@email.com',
-                            hintStyle: const TextStyle(color: Color(0xFFC2C9BB)),
+                            hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF154212))),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0), 
+                              borderSide: BorderSide(color: colorScheme.outline),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0), 
+                              borderSide: BorderSide(color: colorScheme.outline),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0), 
+                              borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Password', style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF191C1A))),
+                            Text(
+                              'Password', 
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'Inter', 
+                                fontWeight: FontWeight.bold, 
+                                fontSize: 12, 
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
                             GestureDetector(
                               onTap: () {
                                 // to put: forgot pass
                               },
-                              child: const Text('Forgot?', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF154212), fontWeight: FontWeight.bold, fontSize: 12)),
+                              child: Text(
+                                'Forgot?', 
+                                style: textTheme.bodyMedium?.copyWith(
+                                  fontFamily: 'Inter', 
+                                  color: colorScheme.primary, 
+                                  fontWeight: FontWeight.bold, 
+                                  fontSize: 12,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -152,40 +188,49 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF72796E)),
+                            prefixIcon: Icon(Icons.lock_outline, color: colorScheme.onSurfaceVariant),
                             hintText: '••••••••',
-                            hintStyle: const TextStyle(color: Color(0xFFC2C9BB)),
+                            hintStyle: TextStyle(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFFC2C9BB))),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF154212))),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0), 
+                              borderSide: BorderSide(color: colorScheme.outline),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0), 
+                              borderSide: BorderSide(color: colorScheme.outline),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0), 
+                              borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 24),
                         
                         if (state is AuthLoading)
-                          const Center(child: CircularProgressIndicator(color: Color(0xFF154212)))
+                          Center(child: CircularProgressIndicator(color: colorScheme.primary))
                         else
                           SizedBox(
                             width: double.infinity,
                             height: 48,
                             child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF154212),
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                              ),
                               onPressed: _submitLogin,
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('Login', style: TextStyle(fontFamily: 'Inter', color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                                  SizedBox(width: 8),
-                                  Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+                                  Text(
+                                    'Login', 
+                                    style: textTheme.bodyLarge?.copyWith(
+                                      fontFamily: 'Inter', 
+                                      color: colorScheme.onPrimary, 
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.arrow_forward, size: 18),
                                 ],
                               ),
                             ),
@@ -193,13 +238,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           
                         const SizedBox(height: 24),
                         Row(
-                          children: const [
-                            Expanded(child: Divider(color: Color(0xFFC2C9BB))),
+                          children: [
+                            Expanded(child: Divider(color: colorScheme.outline.withValues(alpha: 0.5))),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              child: Text('OR', style: TextStyle(color: Color(0xFF72796E), fontSize: 12)),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                'OR', 
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: colorScheme.onSurfaceVariant, 
+                                  fontSize: 12,
+                                ),
+                              ),
                             ),
-                            Expanded(child: Divider(color: Color(0xFFC2C9BB))),
+                            Expanded(child: Divider(color: colorScheme.outline.withValues(alpha: 0.5))),
                           ],
                         ),
                         const SizedBox(height: 24),
@@ -211,13 +262,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               // to put: google sign in
                             },
-                            icon: const Icon(Icons.g_mobiledata, size: 28, color: Color(0xFF191C1A)),
-                            label: const Text('Continue with Google', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF191C1A), fontWeight: FontWeight.w600)),
+                            icon: Icon(Icons.g_mobiledata, size: 28, color: colorScheme.onSurface),
+                            label: Text(
+                              'Continue with Google', 
+                              style: textTheme.bodyMedium?.copyWith(
+                                fontFamily: 'Inter', 
+                                color: colorScheme.onSurface, 
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: const Color(0xFFECEFEA),
-                              side: const BorderSide(color: Color(0xFFC2C9BB)),
+                              backgroundColor: colorScheme.secondary.withValues(alpha: 0.1),
+                              side: BorderSide(color: colorScheme.outline),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
                             ),
                           ),
@@ -229,7 +287,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('New to EcoEcho? ', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF72796E))),
+                      Text(
+                        'New to EcoEcho? ', 
+                        style: textTheme.bodyMedium?.copyWith(
+                          fontFamily: 'Inter', 
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -237,7 +301,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialPageRoute(builder: (context) => const SignupScreen()),
                           );
                         },
-                        child: const Text('Create an account', style: TextStyle(fontFamily: 'Inter', color: Color(0xFF154212), fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'Create an account', 
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontFamily: 'Inter', 
+                            color: colorScheme.primary, 
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   )
