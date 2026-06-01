@@ -47,15 +47,10 @@ async function tierIdFromPercentileRank(percentileRank) {
 // post /signup
 async function signup(req, res) {
   try {
-    const { username, email, password, ecoScore } = req.body;
+    const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
       return res.status(400).json({ error: 'username, email, and password are required' });
-    }
-
-    const score = Number(ecoScore);
-    if (!Number.isFinite(score)) {
-      return res.status(400).json({ error: 'ecoScore must be a valid number' });
     }
 
     // divide and conquer — place user on the benchmark curve
