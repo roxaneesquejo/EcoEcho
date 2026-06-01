@@ -1,17 +1,23 @@
 const { createClient } = require('redis');
 
-// Automatically configure socket options if it's an Upstash/Cloud instance
 let redisConfig = {};
 
 if (process.env.REDIS_URL) {
-  redisConfig.url = process.env.REDIS_URL;
+  let url = process.env.REDIS_URL;
 
-  // Upstash cloud endpoints require TLS. Let's force it if using public cloud instances
-  if (process.env.REDIS_URL.includes('upstash.io')) {
+  // If it's an Upstash cloud instance, ensure it uses the secure rediss:// protocol
+  if (url.includes('upstash.io')) {
+    if (url.startsWith('redis://')) {
+      url = url.replace('redis://', 'rediss://');
+    }
+
+    redisConfig.url = url;
     redisConfig.socket = {
       tls: true,
-      rejectUnauthorized: false // Bypasses self-signed token checks on edge runtimes
+      rejectUnauthorized: false
     };
+  } else {
+    redisConfig.url = url;
   }
 } else {
   redisConfig.socket = {
@@ -26,7 +32,6 @@ const redisClient = createClient(redisConfig);
 redisClient.options = {
   ...redisClient.options,
   reconnectStrategy: (retries) => {
-    // If it keeps failing in production, stop after 3 attempts so the server can bind to its port
     if (process.env.NODE_ENV === 'production' || process.env.DATABASE_URL) {
       if (retries > 3) {
         console.warn(' Giving up on Redis connection to let Express server bind to port.');
@@ -39,20 +44,19 @@ redisClient.options = {
 
 // Intercept the error event cleanly so it does not trigger an unhandled exception crash
 redisClient.on('error', (err) => {
-  console.warn('Redis Connection Error handled gracefully:', err.message);
+  console.warn(' Redis Connection Error handled gracefully:', err.message);
 });
 
 // Helper function to safely connect without crashing the app startup process
 redisClient.safeConnect = async () => {
   try {
-    // Set a quick execution timeout so it doesn't hang forever
     await Promise.race([
       redisClient.connect(),
       new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 4000))
     ]);
     console.log(' Redis cache online.');
   } catch (err) {
-    console.warn('Skipping Redis initialization loop. Backend will query Supabase directly.');
+    console.warn(' Skipping Redis initialization loop. Backend will query Supabase directly.');
   }
 };
 
