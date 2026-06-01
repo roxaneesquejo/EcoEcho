@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-import '../../auth/presentation/home_screen.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+class DashboardPage extends StatefulWidget {
+  const DashboardPage({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    const HomeScreen(), 
     const Center(
       child: Text(
-        'Community Placeholder',
+        'Home Placeholder',
+        style: TextStyle(fontSize: 24, fontFamily: 'Inter', color: Color(0xFF154212)),
+      ),
+    ),
+    const Center(
+      child: Text(
+        'Missions Placeholder',
         style: TextStyle(fontSize: 24, fontFamily: 'Inter', color: Color(0xFF154212)),
       ),
     ),
@@ -56,9 +60,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people_outline),
-            activeIcon: Icon(Icons.people),
-            label: 'Community',
+            icon: Icon(Icons.assignment_outlined),
+            activeIcon: Icon(Icons.assignment),
+            label: 'Missions',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.leaderboard_outlined),
